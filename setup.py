@@ -6,7 +6,7 @@ import setuptools
 setuptools.setup(
     name='jupyterlab_irods',
     description='A Jupyter Notebook server extension which acts as a backend for IRODS requests.',
-    version='0.8.0',
+    version='0.9.0',
     packages=setuptools.find_packages(),
     author          = 'Todd Wickizer',
     author_email    = 'jupyter@googlegroups.com',
