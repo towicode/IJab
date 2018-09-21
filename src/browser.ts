@@ -96,6 +96,8 @@ export
         value += ';flex-wrap: wrap;';
         this._browser.toolbar.node.setAttribute('style', value);
         this._browser.toolbar.node.appendChild(irods_toolbar);
+        irods_toolbar.setAttribute('style', "width:100%");
+
 
         this._browser.toolbar.node.appendChild(submit);
 

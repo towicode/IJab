@@ -1,5 +1,5 @@
 {
-  "name": "IJab",
+  "name": "ijab",
   "version": "0.1.0",
   "description": "A JupyerLab extension giving network filesystem interface over IRODS.",
   "keywords": [
@@ -7,9 +7,9 @@
     "jupyterlab",
     "jupyterlab-extension"
   ],
-  "homepage": "pass",
+  "homepage": "https://github.com/towicode/IJab",
   "bugs": {
-    "url": "pass/issues"
+    "url": "https://github.com/towicode/IJab/issues"
   },
   "license": "BSD-3-Clause",
   "author": "towicode",

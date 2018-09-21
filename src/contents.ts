@@ -194,7 +194,7 @@ export class IrodsDrive implements Contents.IDrive {
             var name_wo = filename.substring(0, filename.lastIndexOf('.'));
             var ext = filename.split('.').pop();
 
-            full_path = toLocalDir + "/" + name_wo + (Math.ceil(Date.now() / 1000)) + ext;
+            full_path = toLocalDir + "/" + name_wo + (Math.ceil(Date.now() / 1000)) + "." + ext;
         }
 
         var copy = {
@@ -257,6 +257,15 @@ export class IrodsDrive implements Contents.IDrive {
                     throw new ServerConnection.ResponseError(response, data.message);
                 });
             }
+
+            var node = document.querySelector('.jp-IrodBrowser button[title="Refresh File List"]') as HTMLElement;
+
+            if (node != null){
+                console.log("clicked!!!");
+                node.click()
+            }
+
+                
             if (loading) {
                 var jpshells = document.getElementsByClassName("jp-ApplicationShell") as HTMLCollectionOf<HTMLElement>;
                 if (jpshells.length > 0) {

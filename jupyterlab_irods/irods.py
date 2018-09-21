@@ -154,15 +154,13 @@ class Irods:
 
         if (type(data['content']) is dict):
             data['content'] = json.dumps(data['content'])
-            print("testing?")
         else:
-            print("no way jose")
+            pass
 
         try:
 
             obj = self.session.data_objects.get(current_path)
 
-            print("test")
             print(json.dumps(data['content']))
             print(data['content'])
             print(data['content'].encode())
@@ -244,24 +242,15 @@ class Irods:
 
             for folder in folders:
                 result['content'].append({
-                    "name":
-                    folder.name,
-                    "path":
-                    current_path + "/" + folder.name,
-                    "last_modified":
-                    "2018-03-05T17:02:11.246961Z",
-                    "created":
-                    "2018-03-05T17:02:11.246961Z",
-                    "content":
-                    None,
-                    "format":
-                    "json",
-                    "mimetype":
-                    None,
-                    "writable":
-                    True,
-                    "type":
-                    "directory"
+                    "name": folder.name,
+                    "path":  current_path + "/" + folder.name,
+                    "last_modified": "2018-03-05T17:02:11.246961Z",
+                    "created": "2018-03-05T17:02:11.246961Z",
+                    "content": None,
+                    "format": "json",
+                    "mimetype": None,
+                    "writable": True,
+                    "type": "directory"
                 })
 
             for f in files:
@@ -342,39 +331,27 @@ class Irods:
                 print(e)
                 print(traceback.format_exc())
                 return {
-                    "name":
-                    "folder_name",
-                    "path":
-                    "folder_path",
-                    "last_modified":
-                    "2018-03-05T17:02:11.246961Z",
-                    "created":
-                    "2018-03-05T17:02:11.246961Z",
-                    "content": [{
-                        "name":
-                        "INVALID IRODS CONFIG",
-                        "path":
-                        "INVALID IRODS CONFIG",
-                        "last_modified":
-                        "2018-03-05T17:02:11.246961Z",
-                        "created":
-                        "2018-03-05T17:02:11.246961Z",
-                        "content": [],
-                        "format":
-                        "json",
-                        "mimetype":
-                        None,
-                        "writable":
-                        False,
-                        "type":
-                        "directory"
-                    }],
-                    "format":
-                    "json",
-                    "mimetype":
-                    None,
-                    "writable":
-                    False,
-                    "type":
-                    "directory"
+                    "name": "folder_name",
+                    "path": "folder_path",
+                    "last_modified": "2018-03-05T17:02:11.246961Z",
+                    "created": "2018-03-05T17:02:11.246961Z",
+                    "content": [
+                        {
+                            "name": "INVALID IRODS CONFIG",
+                            "path": "INVALID IRODS CONFIG",
+                            "last_modified": "2018-03-05T17:02:11.246961Z",
+                            "created": "2018-03-05T17:02:11.246961Z",
+                            "content": [
+
+                            ],
+                            "format":"json",
+                            "mimetype":None,
+                            "writable":False,
+                            "type":"directory"
+                        }
+                    ],
+                    "format": "json",
+                    "mimetype": None,
+                    "writable": False,
+                    "type": "directory"
                 }
