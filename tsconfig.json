@@ -10,7 +10,8 @@
     "target": "es2015",
     "strict": true,
     "strictNullChecks": false,
-    "types": []
+    "types": [ "node" ],
+    "typeRoots": [ "../node_modules/@types" ]
   },
   "include": ["src/*"]
 }

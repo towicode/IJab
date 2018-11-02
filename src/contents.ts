@@ -258,7 +258,7 @@ export class IrodsDrive implements Contents.IDrive {
                 });
             }
 
-            var node = document.querySelector('.jp-IrodBrowser button[title="Refresh File List"]') as HTMLElement;
+            var node = document.querySelector('#irod-fb button[title="Refresh File List"]') as HTMLElement;
 
             if (node != null){
                 console.log("clicked!!!");

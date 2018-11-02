@@ -1,6 +1,6 @@
 {
   "name": "ijab",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "A JupyerLab extension giving network filesystem interface over IRODS.",
   "keywords": [
     "jupyter",
@@ -30,11 +30,14 @@
     "prepare": "npm run clean && npm run build"
   },
   "dependencies": {
-    "@jupyterlab/application": "^0.18.0",
-    "@jupyterlab/docmanager": "^0.18.0",
-    "@jupyterlab/filebrowser": "^0.18.0"
+    "@jupyterlab/application": "^0.19.1",
+    "@jupyterlab/docmanager": "^0.19.1",
+    "@jupyterlab/filebrowser": "^0.19.1",
+    "@types/muicss": "^0.9.1",
+    "muicss": "^0.9.41"
   },
   "devDependencies": {
+    "@types/node": "^10.12.1",
     "rimraf": "^2.6.1",
     "typescript": "~2.9.2"
   },

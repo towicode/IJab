@@ -9,18 +9,20 @@ import {
 
 import { IrodsDrive } from './contents';
 //import { IrodsSpinner } from './modules/irodsSpinner';
-import EditableField from './modules/editableField'
-import { ConnectButton } from './modules/connectButton'
+import MaterialField from './modules/materialField';
+import { ConnectButton } from './modules/connectButton';
 
+import 'muicss/react';
 export
     class IrodBrowser extends Widget {
 
     public createMenu: Boolean;
 
+    
+
 
     constructor(browser: FileBrowser, drive: IrodsDrive) {
         super();
-        this.addClass('jp-IrodBrowser');
         this.layout = new PanelLayout();
         (this.layout as PanelLayout).addWidget(browser);
         this._browser = browser;
@@ -33,61 +35,46 @@ export
             }
         }
 
-        let myStorage = window.localStorage;
+        // let myStorage = window.localStorage;
+
+        var top_collapse = document.createElement("div");
+        top_collapse.classList.add("collapsible-wrap", "no-pad", "xui")
+        var input_collapse = document.createElement("input");
+        input_collapse.type = "checkbox";
+        input_collapse.id = "collapsible-1";
+        input_collapse.setAttribute("checked", "true");
+        top_collapse.appendChild(input_collapse);
+        var label_collapse:HTMLLabelElement = document.createElement("label");
+        label_collapse.htmlFor ="collapsible-1";
+        label_collapse.innerText="IRODS Setup Config";
+        top_collapse.appendChild(label_collapse);
+        var body_collapse = document.createElement("div");
+        body_collapse.classList.add("collapsible-1-area");
+        top_collapse.appendChild(body_collapse);
 
 
         var irods_toolbar = document.createElement('div'); 
 
         // Create an editable name for the user/org name.
-        this.host = new EditableField('', localStorage.getItem("irhost") === null ? '<edit host>' : localStorage.getItem("irhost"));
-        this.host.addClass('jp-editable');
-        this.host.node.title = 'Click to edit host';
+        this.host = new MaterialField('Host / IP', localStorage.getItem("irhost") === null ? 'data.cyverse.com' : localStorage.getItem("irhost"));
         irods_toolbar.appendChild(this.host.node);
-        //this._browser.toolbar.addItem('host', this.host);
-        this.host.name.changed.connect(() => {
-            myStorage.setItem("irhost", String(this.host.name.get()));
-        }, this);
 
-        this.port = new EditableField('', localStorage.getItem("irport") === null ? '<edit port>' : localStorage.getItem("irport"));
-        this.port.addClass('jp-editable');
-        this.port.node.title = 'Click to edit port';
+
+        this.port = new MaterialField('Port', localStorage.getItem("irport") === null ? '1247' : localStorage.getItem("irport"));
         irods_toolbar.appendChild(this.port.node);
-        this.port.name.changed.connect(() => {
-            myStorage.setItem("irport", String(this.port.name.get()));
-        }, this);
 
-        this.user = new EditableField('', localStorage.getItem("iruser") === null ? '<edit user>' : localStorage.getItem("iruser"));
-        this.user.addClass('jp-editable');
-        this.user.node.title = 'Click to edit user';
+
+        this.user = new MaterialField('User', localStorage.getItem("iruser") === null ? '' : localStorage.getItem("iruser"));
         irods_toolbar.appendChild(this.user.node);
-        this.user.name.changed.connect(() => {
-            myStorage.setItem("iruser", String(this.user.name.get()));
-        }, this);
+ 
 
-        this.zone = new EditableField('', localStorage.getItem("irzone") === null ? '<edit zone>' : localStorage.getItem("irzone"));
-        this.zone.addClass('jp-editable');
-        this.zone.node.title = 'Click to edit zone';
+        this.zone = new MaterialField('Zone', localStorage.getItem("irzone") === null ? 'iplant' : localStorage.getItem("irzone"));
         irods_toolbar.appendChild(this.zone.node);
-        this.zone.name.changed.connect(() => {
-            myStorage.setItem("irzone", String(this.zone.name.get()));
-        }, this);
 
-        this.password = new EditableField('', localStorage.getItem("irpassword") === null ? '<edit password>' : localStorage.getItem("irpassword"));
-        this.password.addClass('jp-editable');
-        this.password.node.title = 'Click to edit password';
+
+        this.password = new MaterialField('Password', localStorage.getItem("irpassword") === null ? '' : localStorage.getItem("irpassword"));
         irods_toolbar.appendChild(this.password.node);
-        //this._browser.toolbar.addClass("display_block");
-        this.password.name.changed.connect(() => {
-            myStorage.setItem("irpassword", String(this.password.name.get()));
-        }, this);
-
-        //this._browser.selectedItems
-
-        this.password._editNode.type = "password";
-        // this.password._nameNode.style.filter = "Blur(4px)";
-        var value = this.password._nameNode.getAttribute('style');
-        value += ';-webkit-text-security: disc;';
-        this.password._nameNode.setAttribute('style', value);
+        this.password.inputNode.type = "password";
 
 
         let submit = new ConnectButton(this.host, this.zone, this.port, this.password, this.user, this._browser).submit;
@@ -95,11 +82,32 @@ export
         var value = this._browser.toolbar.node.getAttribute('style');
         value += ';flex-wrap: wrap;';
         this._browser.toolbar.node.setAttribute('style', value);
-        this._browser.toolbar.node.appendChild(irods_toolbar);
+        body_collapse.appendChild(irods_toolbar);
         irods_toolbar.setAttribute('style', "width:100%");
 
+        var ortext = document.createElement("hr");
+        // ortext.innerText = "or"
+        // ortext.classList.add("bottom-10");
 
-        this._browser.toolbar.node.appendChild(submit);
+
+        
+
+
+
+        var icommands:HTMLButtonElement = document.createElement('button'); 
+        icommands.classList.add('btn--raised', 'top-10');
+        icommands.classList.add('.btn--secondary');
+        icommands.setAttribute('style', "width:100%");
+        icommands.innerText = "ICommands Connect";
+
+        body_collapse.appendChild(submit);
+        body_collapse.appendChild(ortext);
+        body_collapse.appendChild(icommands);
+        this._browser.toolbar.node.appendChild(top_collapse);
+
+
+
+
 
         //  weird bug with resizing this code allows it to scroll
         let resizeScrollWindow = () => {
@@ -118,16 +126,17 @@ export
     }
 
     cdHome(): any {
-        this._browser.model.cd('/iplant/home/' + this.user._nameNode.textContent);
+        this._browser.model.cd('/iplant/home/' + this.user.inputNode.value);
     }
 
-    readonly host: EditableField;
-    readonly port: EditableField;
-    readonly user: EditableField;
-    readonly zone: EditableField;
-    readonly password: EditableField;
+    readonly host: MaterialField;
+    readonly port: MaterialField;
+    readonly user: MaterialField;
+    readonly zone: MaterialField;
+    readonly password: MaterialField;
     //private _irodsSpinner: IrodsSpinner;
     private _browser: FileBrowser;
 
 
 }
+
