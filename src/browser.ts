@@ -11,12 +11,15 @@ import { IrodsDrive } from './contents';
 //import { IrodsSpinner } from './modules/irodsSpinner';
 import MaterialField from './modules/materialField';
 import { ConnectButton } from './modules/connectButton';
+import { ConnectICButton } from './modules/connectICButon';
+import { LoadBar } from './modules/loadbar'
 
 import 'muicss/react';
 export
     class IrodBrowser extends Widget {
 
     public createMenu: Boolean;
+    public static loadbar: LoadBar;
 
     
 
@@ -34,6 +37,8 @@ export
                 this.createMenu = true;
             }
         }
+
+
 
         // let myStorage = window.localStorage;
 
@@ -86,27 +91,20 @@ export
         irods_toolbar.setAttribute('style', "width:100%");
 
         var ortext = document.createElement("hr");
-        // ortext.innerText = "or"
-        // ortext.classList.add("bottom-10");
+ 
 
-
-        
-
-
-
-        var icommands:HTMLButtonElement = document.createElement('button'); 
-        icommands.classList.add('btn--raised', 'top-10');
-        icommands.classList.add('.btn--secondary');
-        icommands.setAttribute('style', "width:100%");
-        icommands.innerText = "ICommands Connect";
+        let IC_button = new ConnectICButton(this._browser).icommands;    
 
         body_collapse.appendChild(submit);
         body_collapse.appendChild(ortext);
-        body_collapse.appendChild(icommands);
+        body_collapse.appendChild(IC_button);
         this._browser.toolbar.node.appendChild(top_collapse);
 
+        IrodBrowser.loadbar = new LoadBar();
+        this._browser.toolbar.node.appendChild(IrodBrowser.loadbar.loadBar);
 
-
+        var mm : HTMLSpanElement = this._browser.node.querySelector("span.jp-HomeIcon")
+        mm.setAttribute('style', "display:none");
 
 
         //  weird bug with resizing this code allows it to scroll
@@ -126,7 +124,8 @@ export
     }
 
     cdHome(): any {
-        this._browser.model.cd('/iplant/home/' + this.user.inputNode.value);
+        console.log('/iplant/home/' + String(localStorage.getItem("iruser") === null ? '' : localStorage.getItem("iruser")));
+        this._browser.model.cd('/iplant/home/' + String(localStorage.getItem("iruser") === null ? '' : localStorage.getItem("iruser")));
     }
 
     readonly host: MaterialField;

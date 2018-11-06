@@ -22,6 +22,17 @@ class Irods:
         obj = self.session.data_objects.get(path)
         return obj
 
+
+    def set_connection_icommands(self, json_body):
+        try:
+            env_file = os.environ['IRODS_ENVIRONMENT_FILE']
+        except KeyError:
+            env_file = os.path.expanduser('~/.irods/irods_environment.json')
+
+        self.session = iRODSSession(irods_env_file=env_file)
+
+        return {'username' : self.session.username }
+
     def set_connection(self, json_body):
         self.session = iRODSSession(
             host=json_body['host'],
@@ -59,24 +70,17 @@ class Irods:
 
             try:
                 self.session.data_objects.move(current_path, json_body['path'])
+                return {"irr" : "okay"}
             except:
-                # maybe its a folder.
-                try:
-                    self.session.collections.move(current_path,
-                                                  json_body['path'])
-                    return {
-                        "name": "objname",
-                        "path": "objname",
-                        "last_modified": "2018-03-05T17:02:11.246961Z",
-                        "created": "2018-03-05T17:02:11.246961Z",
-                        "content": None,
-                        "format": "text",
-                        "mimetype": "text/*",
-                        "writable": False,
-                        "type": "file"
-                    }
-                except:
-                    print("Could not rename, tried folder and file")
+                pass
+
+            try:
+                self.session.collections.move(current_path,
+                                                json_body['path'])
+                return {"irr" : "okay"}
+            except:
+                print("Could not mv, tried folder and file")
+                return {"irr" : "bad"}
 
         else:
             #   CASE KEEP ORIGINAL FILE
@@ -85,19 +89,11 @@ class Irods:
 
             try:
                 self.session.data_objects.copy(current_path, json_body['path'])
-                return {
-                    "name": "objname",
-                    "path": "objname",
-                    "last_modified": "2018-03-05T17:02:11.246961Z",
-                    "created": "2018-03-05T17:02:11.246961Z",
-                    "content": None,
-                    "format": "text",
-                    "mimetype": "text/*",
-                    "writable": False,
-                    "type": "file"
-                }
+                return {"irr" : "okay"}
+
             except:
                 print("Could not rename, tried folder and file")
+                return {"irr" : "bad"}
 
     def post(self, current_path, json_body):
         """ create file """
@@ -116,36 +112,23 @@ class Irods:
                     f.write(my_content.encode())
 
                 return {
-                    "name": obj.name,
-                    "path": obj.name,
-                    "last_modified": "2018-03-05T17:02:11.246961Z",
-                    "created": "2018-03-05T17:02:11.246961Z",
+                    "pathname": obj.name,
                     "content": my_content,
-                    "format": "text",
-                    "mimetype": "text/*",
-                    "writable": False,
-                    "type": "file"
+                    "irr" : "good"
                 }
 
             except:
                 print("error creating the file ")
+                return {"irr" : "bad"}
 
         if (json_body == "directory"):
             coll = self.session.collections.create(current_path)
 
-            result = {
-                "name": coll.name,
-                "path": coll.name,
-                "last_modified": "2018-03-05T17:02:11.246961Z",
-                "created": "2018-03-05T17:02:11.246961Z",
-                "content": [],
-                "format": "json",
-                "mimetype": None,
-                "writable": True,
-                "type": "directory"
+            return {
+                    "pathname": coll.name,
+                    "content": [],
+                    "irr" : "good"
             }
-
-            return result
 
     def put(self, current_path, json_body):
         """ save file """
@@ -209,7 +192,20 @@ class Irods:
                 "path": "folder_path",
                 "last_modified": "2018-03-05T17:02:11.246961Z",
                 "created": "2018-03-05T17:02:11.246961Z",
-                "content": [],
+                "content": [
+                    {
+                        "name": "NOT CONNECTED",
+                        "path": "NOT CONNECTED",
+                        "last_modified": "2018-03-05T17:02:11.246961Z",
+                        "created": "2018-03-05T17:02:11.246961Z",
+                        "content": [
+                        ],
+                        "format":"json",
+                        "mimetype":None,
+                        "writable":False,
+                        "type":"directory"
+                    }
+                ],
                 "format": "json",
                 "mimetype": None,
                 "writable": False,

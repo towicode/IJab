@@ -22,6 +22,14 @@ class SetupHandler(APIHandler):
         body = self.get_json_body()
         irods.set_connection(body)
 
+class SetupICommandsHandler(APIHandler):
+    @gen.coroutine
+    def post(self, path = ''):
+        body = self.get_json_body()
+        self.finish(json.dumps(irods.set_connection_icommands(body)))
+
+        
+
 class DownloadHandler(APIHandler):
     @gen.coroutine
     def get(self, path = ''):
@@ -104,13 +112,20 @@ def load_jupyter_server_extension(nb_server_app):
     """
     Function to load Jupyter Server Extension.
     """
+    print("v.0001") 
     nb_server_app.log.info("my module enabled!")
     web_app = nb_server_app.web_app
     base_url = web_app.settings['base_url']
     endpoint = url_path_join(base_url, 'irods')
     setup_endpoint = url_path_join(base_url, 'irsetup')
+    setup_icommands_endpoint = url_path_join(base_url, 'iricsetup')
     download_endpoint = url_path_join(base_url, 'irdownload')
-    handlers = [(endpoint + "(.*)", IrodHandler), (setup_endpoint+"(.*)", SetupHandler), (download_endpoint+"(.*)", DownloadHandler)]
+    handlers = [
+        (endpoint + "(.*)", IrodHandler),
+        (setup_endpoint+"(.*)", SetupHandler),
+        (setup_icommands_endpoint+"(.*)", SetupICommandsHandler),
+        (download_endpoint+"(.*)", DownloadHandler)
+        ]
     web_app.add_handlers('.*$', handlers)
     # irods = Irods()
     # nbapp.web_app.settings['irods'] = irods

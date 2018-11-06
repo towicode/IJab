@@ -15,6 +15,10 @@ import {
     DocumentRegistry
 } from '@jupyterlab/docregistry';
 
+import {
+    IrodBrowser
+} from './browser';
+
 /**
 * Make a request to the notebook server proxy for the
 * Irods API.
@@ -143,22 +147,8 @@ export class IrodsDrive implements Contents.IDrive {
         }
 
         return this.IrodsRequest<Contents.IModel>(path, 'POST', contentType, true).then(contents => {
-            let returnable = {
-                path: contents.path,
-                type: contents.type,
-                name: contents.name,
-                writable: contents.writable,
-                created: contents.created,
-                last_modified: contents.last_modified,
-                mimetype: contents.mimetype,
-                content: contents.content,
-                format: contents.format,
-            }
-
-            if (contentType == 'notebook') {
-                returnable.type = 'notebook';
-            }
-            return returnable;
+            let mega_change = irodsPostToJupyterNewUntitled(path, contents, contentType);
+            return mega_change;
         });
     }
     delete(localPath: string): Promise<void> {
@@ -233,7 +223,10 @@ export class IrodsDrive implements Contents.IDrive {
                 ),
             };
         }
+        IrodBrowser.loadbar.show();
+
         if (loading) {
+
             var jpshells = document.getElementsByClassName("jp-ApplicationShell") as HTMLCollectionOf<HTMLElement>;
 
             if (jpshells.length > 0) {
@@ -258,14 +251,9 @@ export class IrodsDrive implements Contents.IDrive {
                 });
             }
 
-            var node = document.querySelector('#irod-fb button[title="Refresh File List"]') as HTMLElement;
 
-            if (node != null){
-                console.log("clicked!!!");
-                node.click()
-            }
+            IrodBrowser.loadbar.hide();
 
-                
             if (loading) {
                 var jpshells = document.getElementsByClassName("jp-ApplicationShell") as HTMLCollectionOf<HTMLElement>;
                 if (jpshells.length > 0) {
@@ -273,15 +261,17 @@ export class IrodsDrive implements Contents.IDrive {
                     jpshell.style.filter = "grayscale(0%)"
                     jpshell.style.pointerEvents = "inherit"
                 }
+
+                var node = document.querySelector('#irod-fb button[title="Refresh File List"]') as HTMLElement;
+
+                if (node != null) {
+                    node.click()
+                }
             }
 
-            var spinners = document.getElementsByClassName("spinner") as HTMLCollectionOf<HTMLElement>;
-            if (spinners.length > 0) {
-                var spinner = spinners[0];
-                spinner.style.display = "none";
-            }
             return response.json();
         }).catch(rejection => {
+            IrodBrowser.loadbar.hide();
 
             var jpshells = document.getElementsByClassName("jp-ApplicationShell") as HTMLCollectionOf<HTMLElement>;
             if (jpshells.length > 0) {
@@ -306,6 +296,39 @@ export class IrodsDrive implements Contents.IDrive {
 
 
 //todo?
+
+export
+    function irodsPostToJupyterNewUntitled(path: string, contents: any, type: string): Contents.IModel {
+    let tmp:any = {
+        "name": "tmpname",
+        "path": "tmpname",
+        "last_modified": "2018-03-05T17:02:11.246961Z",
+        "created": "2018-03-05T17:02:11.246961Z",
+        "content": "",
+        "format": "text",
+        "mimetype": "text/*",
+        "writable": false,
+        "type": type
+    }
+
+
+    if
+    (
+        !contents.hasOwnProperty('irr')
+        || contents['irr'] == 'bad'
+        || !contents.hasOwnProperty("content")
+        || !contents.hasOwnProperty("pathname")
+    ) {
+        console.log("todo bad")
+    }
+
+    tmp["name"] = contents["pathname"];
+    tmp["path"] = contents["pathname"];
+    tmp["content"] = contents["content"]
+
+
+    return tmp;
+}
 export
     function contentsToJupyterContents(path: string, contents: any, fileTypeForPath: (path: string) => DocumentRegistry.IFileType): Contents.IModel {
     return contents
