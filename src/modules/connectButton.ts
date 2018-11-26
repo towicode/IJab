@@ -6,9 +6,7 @@ import {
    URLExt
 } from '@jupyterlab/coreutils';
 
-import {
-    FileBrowser
-} from '@jupyterlab/filebrowser';
+import { IrodBrowser } from '../browser'
 
 import MaterialField from './materialField';
 
@@ -22,7 +20,7 @@ class ConnectButton {
                 private port: MaterialField,
                 private password: MaterialField,
                 private user: MaterialField,
-                _browser: FileBrowser){
+                _browser: IrodBrowser){
         this.submit = document.createElement('button'); 
         this.submit.classList.add('btn--raised');
         this.submit.classList.add('btn--primary');
@@ -55,8 +53,10 @@ class ConnectButton {
                         throw new ServerConnection.ResponseError(response, data.message);
                     });
                 }
+                _browser.cdHome();
                 //return response.json();
             });
+            
             return my_promise;
     
         }

@@ -8,16 +8,14 @@ import {
    URLExt
 } from '@jupyterlab/coreutils';
 
-import {
-    FileBrowser
-} from '@jupyterlab/filebrowser';
+import { IrodBrowser } from '../browser'
 
 export 
 class ConnectICButton {
 
     public icommands: HTMLElement;
 
-    constructor(_browser: FileBrowser){
+    constructor(_browser: IrodBrowser){
         this.icommands = document.createElement('button'); 
         this.icommands.classList.add('btn--raised', 'top-10');
         this.icommands.classList.add('.btn--secondary');
@@ -43,6 +41,7 @@ class ConnectICButton {
             }).then(ocoysfpos => {
                 let myStorage = window.localStorage;
                 myStorage.setItem("iruser", String(ocoysfpos.username));
+                _browser.cdHome();
             });    
         }
     }

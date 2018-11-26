@@ -61,7 +61,7 @@ export
         var irods_toolbar = document.createElement('div'); 
 
         // Create an editable name for the user/org name.
-        this.host = new MaterialField('Host / IP', localStorage.getItem("irhost") === null ? 'data.cyverse.com' : localStorage.getItem("irhost"));
+        this.host = new MaterialField('Host / IP', localStorage.getItem("irhost") === null ? 'data.cyverse.org' : localStorage.getItem("irhost"));
         irods_toolbar.appendChild(this.host.node);
 
 
@@ -82,7 +82,7 @@ export
         this.password.inputNode.type = "password";
 
 
-        let submit = new ConnectButton(this.host, this.zone, this.port, this.password, this.user, this._browser).submit;
+        let submit = new ConnectButton(this.host, this.zone, this.port, this.password, this.user, this).submit;
         
         var value = this._browser.toolbar.node.getAttribute('style');
         value += ';flex-wrap: wrap;';
@@ -93,7 +93,7 @@ export
         var ortext = document.createElement("hr");
  
 
-        let IC_button = new ConnectICButton(this._browser).icommands;    
+        let IC_button = new ConnectICButton(this).icommands;    
 
         body_collapse.appendChild(submit);
         body_collapse.appendChild(ortext);

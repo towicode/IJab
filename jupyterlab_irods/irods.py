@@ -259,7 +259,7 @@ class Irods:
                     "content": None,
                     "format": "text",
                     "mimetype": "text/*",
-                    "writable": False,
+                    "writable": True,
                     "type": "file"
                 }
                 result['content'].append(r)
@@ -319,7 +319,7 @@ class Irods:
                     "content": file_string,
                     "format": str(ftype),
                     "mimetype": str(mtype),
-                    "writable": False,
+                    "writable": True,
                     "type": "file"
                 }
 
@@ -342,12 +342,12 @@ class Irods:
                             ],
                             "format":"json",
                             "mimetype":None,
-                            "writable":False,
+                            "writable":True,
                             "type":"directory"
                         }
                     ],
                     "format": "json",
                     "mimetype": None,
-                    "writable": False,
+                    "writable": True,
                     "type": "directory"
                 }

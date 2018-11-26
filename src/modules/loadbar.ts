@@ -31,7 +31,11 @@ class LoadBar {
     }
 
     public hide(){
-        this.loadBar.innerHTML = "";
+        this.loadBar.innerHTML = 
+        `
+        <div class="load-bar-inactive">
+        </div>
+       `
     }
 }
 

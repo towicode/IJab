@@ -1838,6 +1838,14 @@
     height: 6px;
     background-color: #fdba2c;
   }
+
+  .load-bar-inactive {
+      position: relative;
+      margin-top: 20px;
+      width: 100%;
+      height: 6px;
+      background-color: transparent;
+  }
   .bar {
     content: "";
     display: inline;

@@ -198,7 +198,7 @@ export class IrodsDrive implements Contents.IDrive {
         });
     }
     createCheckpoint(localPath: string): Promise<Contents.ICheckpointModel> {
-        return Promise.reject('Irods is CURRENTLY read only1');
+        return Promise.resolve(null);
     }
     listCheckpoints(localPath: string): Promise<Contents.ICheckpointModel[]> {
         return Promise.resolve([]);
