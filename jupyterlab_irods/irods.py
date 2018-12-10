@@ -11,6 +11,8 @@ import mimetypes
 import base64
 import traceback
 
+import pkg_resources
+
 
 class Irods:
     """
@@ -21,6 +23,11 @@ class Irods:
     def get_download(self, path):
         obj = self.session.data_objects.get(path)
         return obj
+
+
+    def get_version(self,path):
+        m = (pkg_resources.get_distribution("jupyterlab-irods").version)
+        return {"status":m}
 
 
     def set_connection_icommands(self, json_body):

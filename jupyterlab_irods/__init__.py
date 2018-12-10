@@ -18,6 +18,10 @@ irods = Irods()
 
 class SetupHandler(APIHandler):
     @gen.coroutine
+    def get(self, path = ''):
+        self.finish(json.dumps(irods.get_version(path)))
+
+    @gen.coroutine
     def post(self, path = ''):
         body = self.get_json_body()
         irods.set_connection(body)

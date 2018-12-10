@@ -223,7 +223,9 @@ export class IrodsDrive implements Contents.IDrive {
                 ),
             };
         }
-        IrodBrowser.loadbar.show();
+
+        if (IrodBrowser.loadbar != undefined)
+            IrodBrowser.loadbar.show();
 
         if (loading) {
 
@@ -251,8 +253,8 @@ export class IrodsDrive implements Contents.IDrive {
                 });
             }
 
-
-            IrodBrowser.loadbar.hide();
+            if (IrodBrowser.loadbar != undefined)
+                IrodBrowser.loadbar.hide();
 
             if (loading) {
                 var jpshells = document.getElementsByClassName("jp-ApplicationShell") as HTMLCollectionOf<HTMLElement>;
@@ -299,7 +301,7 @@ export class IrodsDrive implements Contents.IDrive {
 
 export
     function irodsPostToJupyterNewUntitled(path: string, contents: any, type: string): Contents.IModel {
-    let tmp:any = {
+    let tmp: any = {
         "name": "tmpname",
         "path": "tmpname",
         "last_modified": "2018-03-05T17:02:11.246961Z",

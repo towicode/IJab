@@ -28,6 +28,18 @@ import {
   Clipboard
 } from '@jupyterlab/apputils';
 
+import {
+  ServerConnection,
+} from '@jupyterlab/services';
+
+import {
+  URLExt
+} from '@jupyterlab/coreutils';
+
+var pjson = require('../package.json');
+
+
+
 
 namespace CommandIDs {
   export const copyIPath = `jupyterlab_irods:copy-i-path`;
@@ -51,6 +63,31 @@ function activateFileBrowser(app: JupyterLab,
   factory: IFileBrowserFactory,
   restorer: ILayoutRestorer): void {
   const { commands } = app;
+
+
+
+  let server_con = ServerConnection.makeSettings();
+  let setupUrl = URLExt.join(server_con.baseUrl, 'irsetup', "a");
+
+  ServerConnection.makeRequest(setupUrl, {
+    method: "GET",
+  }, server_con).then(async response => {
+    if (response.status !== 200) {
+      const data = await response.json();
+      throw new ServerConnection.ResponseError(response, data.message);
+    }
+
+    return response.json();
+  }).then(ocoysfpos => {
+    console.log("PYTHON VERSION IS: " + ocoysfpos.status)
+    console.log("NPM VERSION IS   : " + pjson.version);
+    console.log("!!!THESE TWO NUMBERS SHOULD BE EQUAL!!!")
+
+  });
+
+
+
+
 
   commands.addCommand(CommandIDs.copyIPath, {
     execute: () => {
