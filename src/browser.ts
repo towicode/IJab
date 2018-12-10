@@ -43,6 +43,8 @@ export
         // let myStorage = window.localStorage;
 
         var top_collapse = document.createElement("div");
+        top_collapse.setAttribute('style', "width:100%");
+
         top_collapse.classList.add("collapsible-wrap", "no-pad", "xui")
         var input_collapse = document.createElement("input");
         input_collapse.type = "checkbox";
@@ -59,6 +61,7 @@ export
 
 
         var irods_toolbar = document.createElement('div'); 
+
 
         // Create an editable name for the user/org name.
         this.host = new MaterialField('Host / IP', localStorage.getItem("irhost") === null ? 'data.cyverse.org' : localStorage.getItem("irhost"));
@@ -91,6 +94,9 @@ export
         irods_toolbar.setAttribute('style', "width:100%");
 
         var ortext = document.createElement("hr");
+        ortext.align = "left"
+        ortext.setAttribute('style', "max-width: 200px");
+
  
 
         let IC_button = new ConnectICButton(this).icommands;    

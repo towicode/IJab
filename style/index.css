@@ -2,7 +2,15 @@
     display: block !important;
 }
 
-#irod-fb span.jp-DirListing-headerItemText {
+#irods-file-browser {
+  height: 100% !important;
+}
+
+#irod-fb {
+  height: 100%;
+}
+
+/* #irod-fb span.jp-DirListing-headerItemText {
     display: none !important;
 }
 #irod-fb  span.jp-DirListing-itemModified {
@@ -11,7 +19,7 @@
 
 #irod-fb  div.jp-DirListing-headerItem.jp-id-modified {
     display: none !important;
-}
+} */
 
 #irod-fb > div.p-Widget.jp-DirListing.jp-FileBrowser-listing .jp-DirListing-header {
   /* opacity: 0; */

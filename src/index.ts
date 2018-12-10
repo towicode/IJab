@@ -24,7 +24,17 @@ import {
   IrodBrowser
 } from './browser';
 
-import { CopyPath } from './modules/copyPath'
+import {
+  Clipboard
+} from '@jupyterlab/apputils';
+
+
+namespace CommandIDs {
+  export const copyIPath = `jupyterlab_irods:copy-i-path`;
+}
+
+
+//import { CopyPath } from './modules/copyPath'
 
 /**
  * Initialization data for the jupyterlab_irods extension.
@@ -42,6 +52,31 @@ function activateFileBrowser(app: JupyterLab,
   restorer: ILayoutRestorer): void {
   const { commands } = app;
 
+  commands.addCommand(CommandIDs.copyIPath, {
+    execute: () => {
+      const item = browser.selectedItems().next();
+      if (!item) {
+        return;
+      }
+      console.log("Copied path to clipboard")
+      Clipboard.copyToSystem("/" + item.path.substr(6));
+
+    },
+    iconClass: 'jp-MaterialIcon jp-FileIcon',
+    label: 'Copy iRODS Path'
+  });
+
+  // matches only non-directory items in the Google Drive browser.
+  const selector =
+    '#irod-fb .jp-DirListing-item';
+
+
+  app.contextMenu.addItem({
+    command: CommandIDs.copyIPath,
+    selector,
+    rank: 0
+  });
+
   console.log("Irods Activated  1");
 
   const drive = new IrodsDrive(app.docRegistry);
@@ -52,6 +87,7 @@ function activateFileBrowser(app: JupyterLab,
     commands,
     driveName: drive.name
   });
+
 
   const irodsBrowser = new IrodBrowser(browser, drive);
 
@@ -79,44 +115,44 @@ function activateFileBrowser(app: JupyterLab,
 
   // Add the right click menu modifier
 
-  var observer = new MutationObserver(function (mutations) {
+  // var observer = new MutationObserver(function (mutations) {
 
-    if (!irodsBrowser.createMenu){
-      
-      return;
-    }
+  //   if (!irodsBrowser.createMenu){
 
-    for (let bo of mutations) {
+  //     return;
+  //   }
 
-      if (bo.addedNodes.length == 0) {
-        continue;
-      }
+  //   for (let bo of mutations) {
 
-      var foundElement: HTMLElement;
+  //     if (bo.addedNodes.length == 0) {
+  //       continue;
+  //     }
 
-      for (let i = 0; i < bo.addedNodes.length; i++) {
-        let no = <HTMLElement>bo.addedNodes.item(i);
+  //     var foundElement: HTMLElement;
 
-        if (no.className != "p-Widget p-Menu") {
-          continue;
-        }
-        if (no.childElementCount != 1) {
-          continue;
-        }
-        foundElement = <HTMLElement>no.childNodes.item(0);
-      }
+  //     for (let i = 0; i < bo.addedNodes.length; i++) {
+  //       let no = <HTMLElement>bo.addedNodes.item(i);
 
-      if (foundElement == undefined) {
-        continue;
-      }
+  //       if (no.className != "p-Widget p-Menu") {
+  //         continue;
+  //       }
+  //       if (no.childElementCount != 1) {
+  //         continue;
+  //       }
+  //       foundElement = <HTMLElement>no.childNodes.item(0);
+  //     }
 
-      let el: HTMLElement = new CopyPath().copyPath;
-      foundElement.appendChild(el);
-      irodsBrowser.createMenu = false;
-    }
-  });
+  //     if (foundElement == undefined) {
+  //       continue;
+  //     }
 
-  observer.observe(document.body, { childList: true });
+  //     let el: HTMLElement = new CopyPath().copyPath;
+  //     foundElement.appendChild(el);
+  //     irodsBrowser.createMenu = false;
+  //   }
+  // });
+
+  // observer.observe(document.body, { childList: true });
 
   return;
 

@@ -25,7 +25,7 @@ class ConnectButton {
         this.submit.classList.add('btn--raised');
         this.submit.classList.add('btn--primary');
         let submit = this.submit;
-        submit.setAttribute('style', "width:100%");
+        submit.setAttribute('style', "width:100%;max-width:200px;");
         submit.innerHTML = "Submit";
         submit.onclick = () => {
             let server_con = ServerConnection.makeSettings();

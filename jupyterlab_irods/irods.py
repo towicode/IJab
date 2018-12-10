@@ -172,8 +172,8 @@ class Irods:
             return {
                 "name": obj.name,
                 "path": obj.name,
-                "last_modified": "2018-03-05T17:02:11.246961Z",
-                "created": "2018-03-05T17:02:11.246961Z",
+                "last_modified": "1980-03-05T17:02:11.246961Z",
+                "created": "1980-03-05T17:02:11.246961Z",
                 "content": my_content,
                 "format": "text",
                 "mimetype": "text/*",
@@ -190,14 +190,14 @@ class Irods:
             return {
                 "name": "folder_name",
                 "path": "folder_path",
-                "last_modified": "2018-03-05T17:02:11.246961Z",
-                "created": "2018-03-05T17:02:11.246961Z",
+                "last_modified": "1980-03-05T17:02:11.246961Z",
+                "created": "1980-03-05T17:02:11.246961Z",
                 "content": [
                     {
                         "name": "NOT CONNECTED",
                         "path": "NOT CONNECTED",
-                        "last_modified": "2018-03-05T17:02:11.246961Z",
-                        "created": "2018-03-05T17:02:11.246961Z",
+                        "last_modified": "1980-03-05T17:02:11.246961Z",
+                        "created": "1980-03-05T17:02:11.246961Z",
                         "content": [
                         ],
                         "format":"json",
@@ -227,8 +227,8 @@ class Irods:
             result = {
                 "name": "folder_name",
                 "path": "folder_path",
-                "last_modified": "2018-03-05T17:02:11.246961Z",
-                "created": "2018-03-05T17:02:11.246961Z",
+                "last_modified": "1980-03-05T17:02:11.246961Z",
+                "created": "1980-03-05T17:02:11.246961Z",
                 "content": [],
                 "format": "json",
                 "mimetype": None,
@@ -240,8 +240,8 @@ class Irods:
                 result['content'].append({
                     "name": folder.name,
                     "path":  current_path + "/" + folder.name,
-                    "last_modified": "2018-03-05T17:02:11.246961Z",
-                    "created": "2018-03-05T17:02:11.246961Z",
+                    "last_modified": "1980-03-05T17:02:11.246961Z",
+                    "created": "1980-03-05T17:02:11.246961Z",
                     "content": None,
                     "format": "json",
                     "mimetype": None,
@@ -254,8 +254,8 @@ class Irods:
                 r = {
                     "name": f.name,
                     "path": current_path + "/" + f.name,
-                    "last_modified": "2018-03-05T17:02:11.246961Z",
-                    "created": "2018-03-05T17:02:11.246961Z",
+                    "last_modified": f.modify_time.isoformat() +"Z",
+                    "created": f.create_time.isoformat()+ "Z",
                     "content": None,
                     "format": "text",
                     "mimetype": "text/*",
@@ -277,8 +277,8 @@ class Irods:
                     return {
                         "name": "error",
                         "path": "error",
-                        "last_modified": "2018-03-05T17:02:11.246961Z",
-                        "created": "2018-03-05T17:02:11.246961Z",
+                        "last_modified": "1980-03-05T17:02:11.246961Z",
+                        "created": "1980-03-05T17:02:11.246961Z",
                         "content": "This file is too large to view in Jupyter Lab\nMax file size 100mb",
                         "format": "text",
                         "mimetype": "too_large",
@@ -314,8 +314,8 @@ class Irods:
                 return {
                     "name": obj.name,
                     "path": obj.name,
-                    "last_modified": "2018-03-05T17:02:11.246961Z",
-                    "created": "2018-03-05T17:02:11.246961Z",
+                    "last_modified": obj.modify_time.isoformat() +"Z",
+                    "created": obj.create_time.isoformat()+"Z",
                     "content": file_string,
                     "format": str(ftype),
                     "mimetype": str(mtype),
@@ -329,14 +329,14 @@ class Irods:
                 return {
                     "name": "folder_name",
                     "path": "folder_path",
-                    "last_modified": "2018-03-05T17:02:11.246961Z",
-                    "created": "2018-03-05T17:02:11.246961Z",
+                    "last_modified": "1980-03-05T17:02:11.246961Z",
+                    "created": "1980-03-05T17:02:11.246961Z",
                     "content": [
                         {
                             "name": "INVALID IRODS CONFIG",
                             "path": "INVALID IRODS CONFIG",
-                            "last_modified": "2018-03-05T17:02:11.246961Z",
-                            "created": "2018-03-05T17:02:11.246961Z",
+                            "last_modified": "1980-03-05T17:02:11.246961Z",
+                            "created": "1980-03-05T17:02:11.246961Z",
                             "content": [
 
                             ],

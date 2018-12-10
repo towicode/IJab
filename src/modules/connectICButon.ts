@@ -19,7 +19,7 @@ class ConnectICButton {
         this.icommands = document.createElement('button'); 
         this.icommands.classList.add('btn--raised', 'top-10');
         this.icommands.classList.add('.btn--secondary');
-        this.icommands.setAttribute('style', "width:100%");
+        this.icommands.setAttribute('style', "width:100%;max-width:200px;");
         this.icommands.innerText = "ICommands Connect";
         
         this.icommands.onclick = () => {

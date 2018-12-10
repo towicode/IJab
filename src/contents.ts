@@ -53,8 +53,8 @@ export class IrodsDrive implements Contents.IDrive {
     /**
      * The name of the drive.
      */
-    get name(): 'Irods' {
-        return 'Irods';
+    get name(): 'iRODS' {
+        return 'iRODS';
     }
 
     /**
