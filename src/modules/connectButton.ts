@@ -35,7 +35,7 @@ class ConnectButton {
             myStorage.setItem("irhost", String(this.host.inputNode.value));
             myStorage.setItem("irzone", String(this.zone.inputNode.value));
             myStorage.setItem("irport", String(this.port.inputNode.value));
-            myStorage.setItem("irpassword", String(this.password.inputNode.value));
+            //myStorage.setItem("irpassword", String(this.password.inputNode.value));
             myStorage.setItem("iruser", String(this.user.inputNode.value));
 
             let my_promise = ServerConnection.makeRequest(setupUrl, {

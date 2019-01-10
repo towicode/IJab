@@ -53,8 +53,8 @@ export class IrodsDrive implements Contents.IDrive {
     /**
      * The name of the drive.
      */
-    get name(): 'iRODS' {
-        return 'iRODS';
+    get name(): 'Irods' {
+        return 'Irods';
     }
 
     /**
@@ -198,16 +198,16 @@ export class IrodsDrive implements Contents.IDrive {
         });
     }
     createCheckpoint(localPath: string): Promise<Contents.ICheckpointModel> {
-        return Promise.resolve(null);
+        return Promise.reject('Not Implemented');
     }
     listCheckpoints(localPath: string): Promise<Contents.ICheckpointModel[]> {
         return Promise.resolve([]);
     }
     restoreCheckpoint(localPath: string, checkpointID: string): Promise<void> {
-        return Promise.reject('Irods is CURRENTLY read only2');
+        return Promise.reject('Not Implemented');
     }
     deleteCheckpoint(localPath: string, checkpointID: string): Promise<void> {
-        return Promise.reject('Irods is CURRENTLY read only3');
+        return Promise.reject('Not Implemented');
     }
 
     private IrodsRequest<T>(url: string, type: string, content: any, loading?: boolean): Promise<T> {
@@ -254,6 +254,7 @@ export class IrodsDrive implements Contents.IDrive {
             }
 
             if (IrodBrowser.loadbar != undefined)
+
                 IrodBrowser.loadbar.hide();
 
             if (loading) {
@@ -273,7 +274,9 @@ export class IrodsDrive implements Contents.IDrive {
 
             return response.json();
         }).catch(rejection => {
-            IrodBrowser.loadbar.hide();
+            if (IrodBrowser.loadbar != undefined)
+
+                IrodBrowser.loadbar.hide();
 
             var jpshells = document.getElementsByClassName("jp-ApplicationShell") as HTMLCollectionOf<HTMLElement>;
             if (jpshells.length > 0) {
