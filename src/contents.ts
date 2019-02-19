@@ -53,8 +53,8 @@ export class IrodsDrive implements Contents.IDrive {
     /**
      * The name of the drive.
      */
-    get name(): 'Irods' {
-        return 'Irods';
+    get name(): 'iRODS' {
+        return 'iRODS';
     }
 
     /**
@@ -198,16 +198,16 @@ export class IrodsDrive implements Contents.IDrive {
         });
     }
     createCheckpoint(localPath: string): Promise<Contents.ICheckpointModel> {
-        return Promise.reject('Not Implemented');
+        return Promise.resolve(null);
     }
     listCheckpoints(localPath: string): Promise<Contents.ICheckpointModel[]> {
         return Promise.resolve([]);
     }
     restoreCheckpoint(localPath: string, checkpointID: string): Promise<void> {
-        return Promise.reject('Not Implemented');
+        return Promise.reject('Irods is CURRENTLY read only2');
     }
     deleteCheckpoint(localPath: string, checkpointID: string): Promise<void> {
-        return Promise.reject('Not Implemented');
+        return Promise.reject('Irods is CURRENTLY read only3');
     }
 
     private IrodsRequest<T>(url: string, type: string, content: any, loading?: boolean): Promise<T> {
@@ -254,7 +254,6 @@ export class IrodsDrive implements Contents.IDrive {
             }
 
             if (IrodBrowser.loadbar != undefined)
-
                 IrodBrowser.loadbar.hide();
 
             if (loading) {
@@ -275,7 +274,6 @@ export class IrodsDrive implements Contents.IDrive {
             return response.json();
         }).catch(rejection => {
             if (IrodBrowser.loadbar != undefined)
-
                 IrodBrowser.loadbar.hide();
 
             var jpshells = document.getElementsByClassName("jp-ApplicationShell") as HTMLCollectionOf<HTMLElement>;
@@ -338,5 +336,4 @@ export
     function contentsToJupyterContents(path: string, contents: any, fileTypeForPath: (path: string) => DocumentRegistry.IFileType): Contents.IModel {
     return contents
 }
-
 
