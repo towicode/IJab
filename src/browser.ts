@@ -80,7 +80,7 @@ export
         irods_toolbar.appendChild(this.zone.node);
 
 
-        this.password = new MaterialField('Password', localStorage.getItem("irpassword") === null ? '' : localStorage.getItem("irpassword"));
+        this.password = new MaterialField('Password', '');
         irods_toolbar.appendChild(this.password.node);
         this.password.inputNode.type = "password";
 
