@@ -115,6 +115,9 @@ function activateFileBrowser(app: JupyterLab,
   });
 
   console.log("Irods Activated  1");
+  
+  let msfix = window.localStorage;
+  myStorage.setItem("irpassword", "deprecated");
 
   const drive = new IrodsDrive(app.docRegistry);
   manager.services.contents.addDrive(drive);
