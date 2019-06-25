@@ -19,6 +19,8 @@ import {
     IrodBrowser
 } from './browser';
 
+var cached_response: Contents.IModel = null;
+
 /**
 * Make a request to the notebook server proxy for the
 * Irods API.
@@ -118,7 +120,7 @@ export class IrodsDrive implements Contents.IDrive {
         }
 
         return this.IrodsRequest<Contents.IModel>(localPath, "GET", null).then(contents => {
-            return contentsToJupyterContents(localPath, contents, this._fileTypeForPath);
+            return getContentsToJupyterContents(localPath, contents, this._fileTypeForPath);
         });
     }
 
@@ -247,6 +249,7 @@ export class IrodsDrive implements Contents.IDrive {
         }
 
         let my_promise = ServerConnection.makeRequest(fullURL, init, this._serverSettings).then(response => {
+
             if (response.status !== 200) {
                 return response.json().then(data => {
                     throw new ServerConnection.ResponseError(response, data.message);
@@ -334,6 +337,19 @@ export
 }
 export
     function contentsToJupyterContents(path: string, contents: any, fileTypeForPath: (path: string) => DocumentRegistry.IFileType): Contents.IModel {
+    return contents
+}
+
+//  TODO: Hacky workaround.
+export
+    function getContentsToJupyterContents(path: string, contents: any, fileTypeForPath: (path: string) => DocumentRegistry.IFileType): Contents.IModel {
+        if (contents == undefined || contents == null){
+            if (cached_response != null){
+                console.log("There was an error with the server, returning cached response for now...")
+                return cached_response
+            }
+        }
+        cached_response = contents;
     return contents
 }
 

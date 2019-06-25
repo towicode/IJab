@@ -33,6 +33,11 @@
   background-image: url('https://i.imgur.com/LShs8sh.png');
 }
 
+.jp-Toolbar > .jp-Toolbar-item {
+
+  height: inherit !important;
+}
+
 .xui .tabs label, .xui .text-center {
     text-align: center;
   }
