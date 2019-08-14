@@ -1,5 +1,5 @@
 import {
-  JupyterLab, JupyterLabPlugin
+  JupyterFrontEnd, JupyterFrontEndPlugin
 } from '@jupyterlab/application';
 
 import '../style/index.css';
@@ -51,14 +51,14 @@ namespace CommandIDs {
 /**
  * Initialization data for the jupyterlab_irods extension.
  */
-const fileBrowserPlugin: JupyterLabPlugin<void> = {
+const fileBrowserPlugin: JupyterFrontEndPlugin<void> = {
   id: 'jupyterlab_irods',
   requires: [IDocumentManager, IFileBrowserFactory, ILayoutRestorer],
   autoStart: true,
   activate: activateFileBrowser
 };
 
-function activateFileBrowser(app: JupyterLab,
+function activateFileBrowser(app: JupyterFrontEnd,
   manager: IDocumentManager,
   factory: IFileBrowserFactory,
   restorer: ILayoutRestorer): void {
@@ -124,7 +124,7 @@ function activateFileBrowser(app: JupyterLab,
 
 
   const browser = factory.createFileBrowser("irod-fb", {
-    commands,
+    //commands,
     driveName: drive.name
   });
 
@@ -138,7 +138,8 @@ function activateFileBrowser(app: JupyterLab,
 
   // Add the file browser widget to the application restorer.
   restorer.add(irodsBrowser, "irod-fb");
-  app.shell.addToLeftArea(irodsBrowser, { rank: 102 });
+  app.shell.add(irodsBrowser, 'left', {rank: 102});
+  //app.shell.addToLeftArea(irodsBrowser, { rank: 102 });
 
 
 

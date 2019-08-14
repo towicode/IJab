@@ -21,9 +21,6 @@ export
     public createMenu: Boolean;
     public static loadbar: LoadBar;
 
-    
-
-
     constructor(browser: FileBrowser, drive: IrodsDrive) {
         super();
         this.layout = new PanelLayout();
@@ -37,8 +34,6 @@ export
                 this.createMenu = true;
             }
         }
-
-
 
         // let myStorage = window.localStorage;
 
@@ -108,9 +103,11 @@ export
 
         IrodBrowser.loadbar = new LoadBar();
         this._browser.toolbar.node.appendChild(IrodBrowser.loadbar.loadBar);
+        
 
-        var mm : HTMLSpanElement = this._browser.node.querySelector("span.jp-HomeIcon")
-        mm.setAttribute('style', "display:none");
+        // TODO
+        //var mm : HTMLSpanElement = this._browser.node.querySelector("span.jp-HomeIcon")
+        //mm.setAttribute('style', "display:none");
 
 
         //  weird bug with resizing this code allows it to scroll
