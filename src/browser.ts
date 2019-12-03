@@ -11,7 +11,7 @@ import { IrodsDrive } from './contents';
 //import { IrodsSpinner } from './modules/irodsSpinner';
 import MaterialField from './modules/materialField';
 import { ConnectButton } from './modules/connectButton';
-import { ConnectICButton } from './modules/connectICButon';
+//import { ConnectICButton } from './modules/connectICButon';
 import { LoadBar } from './modules/loadbar'
 
 import 'muicss/react';
@@ -48,6 +48,7 @@ export
         top_collapse.appendChild(input_collapse);
         var label_collapse:HTMLLabelElement = document.createElement("label");
         label_collapse.htmlFor ="collapsible-1";
+        label_collapse.id="collapseLabel1";
         label_collapse.innerText="IRODS Setup Config";
         top_collapse.appendChild(label_collapse);
         var body_collapse = document.createElement("div");
@@ -56,6 +57,7 @@ export
 
 
         var irods_toolbar = document.createElement('div'); 
+        irods_toolbar.id = "mainToolbar1";
 
 
         // Create an editable name for the user/org name.
@@ -92,13 +94,9 @@ export
         ortext.align = "left"
         ortext.setAttribute('style', "max-width: 200px");
 
- 
-
-        let IC_button = new ConnectICButton(this).icommands;    
 
         body_collapse.appendChild(submit);
-        body_collapse.appendChild(ortext);
-        body_collapse.appendChild(IC_button);
+
         this._browser.toolbar.node.appendChild(top_collapse);
 
         IrodBrowser.loadbar = new LoadBar();
@@ -127,8 +125,11 @@ export
     }
 
     cdHome(): any {
-        console.log('/iplant/home/' + String(localStorage.getItem("iruser") === null ? '' : localStorage.getItem("iruser")));
-        this._browser.model.cd('/iplant/home/' + String(localStorage.getItem("iruser") === null ? '' : localStorage.getItem("iruser")));
+
+        var zone = String(localStorage.getItem("irzone") === null ? 'iplant' : localStorage.getItem("irzone"));
+        var user = String(localStorage.getItem("iruser") === null ? '' : localStorage.getItem("iruser"));
+        var home =  "/" + zone + '/home/' + user 
+        this._browser.model.cd(home);
     }
 
     readonly host: MaterialField;

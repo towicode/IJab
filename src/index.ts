@@ -36,6 +36,11 @@ import {
   URLExt
 } from '@jupyterlab/coreutils';
 
+import {
+  IMainMenu
+} from '@jupyterlab/mainmenu';
+
+
 var pjson = require('../package.json');
 
 
@@ -43,6 +48,7 @@ var pjson = require('../package.json');
 
 namespace CommandIDs {
   export const copyIPath = `jupyterlab_irods:copy-i-path`;
+  export const IConnect = 'jupyterlab_irods:i-connect';
 }
 
 
@@ -53,7 +59,7 @@ namespace CommandIDs {
  */
 const fileBrowserPlugin: JupyterFrontEndPlugin<void> = {
   id: 'jupyterlab_irods',
-  requires: [IDocumentManager, IFileBrowserFactory, ILayoutRestorer],
+  requires: [IDocumentManager, IFileBrowserFactory, ILayoutRestorer, IMainMenu],
   autoStart: true,
   activate: activateFileBrowser
 };
@@ -61,8 +67,12 @@ const fileBrowserPlugin: JupyterFrontEndPlugin<void> = {
 function activateFileBrowser(app: JupyterFrontEnd,
   manager: IDocumentManager,
   factory: IFileBrowserFactory,
-  restorer: ILayoutRestorer): void {
+  restorer: ILayoutRestorer,
+  mainMenu: IMainMenu): void {
   const { commands } = app;
+
+
+  var myBrowser: IrodBrowser = null;
 
 
 
@@ -86,9 +96,6 @@ function activateFileBrowser(app: JupyterFrontEnd,
   });
 
 
-
-
-
   commands.addCommand(CommandIDs.copyIPath, {
     execute: () => {
       const item = browser.selectedItems().next();
@@ -103,10 +110,71 @@ function activateFileBrowser(app: JupyterFrontEnd,
     label: 'Copy iRODS Path'
   });
 
+
+  commands.addCommand(CommandIDs.IConnect, {
+    execute: () => {
+
+      let server_con = ServerConnection.makeSettings();
+      let setupUrl = URLExt.join(server_con.baseUrl, 'iricsetup', "a");
+
+      ServerConnection.makeRequest(setupUrl, {
+          method: "POST",
+          body: JSON.stringify({
+              okay: "200"
+          })
+      }, server_con).then(response => {
+          if (response.status !== 200) {
+              return response.json().then(data => {
+                  throw new ServerConnection.ResponseError(response, data.message);
+              });
+          }
+          return response.json();
+      }).then(ocoysfpos => {
+          let myStorage = window.localStorage;
+          myStorage.setItem("iruser", String(ocoysfpos.username));
+          myStorage.setItem("irzone", String(ocoysfpos.zone));
+
+          // cd home
+          if (myBrowser != null){
+            myBrowser.cdHome();
+          }
+
+          //  if we connect we want to click the label so  we don't have that popup menu
+          //  still active
+          let area = document.getElementsByClassName("collapsible-1-area");
+          if (area.length <= 0){
+            return
+          }
+
+          let myArea = area[0];
+
+          if (window.getComputedStyle(myArea).height != "0px"){
+
+          }
+
+          let label = document.getElementById("collapseLabel1")
+
+          if (label == null){
+            return
+          }
+
+          label.click()
+      });    
+
+    },
+    iconClass: 'jp-MaterialIcon jp-FileIcon',
+    label: 'Connect using ICommands'
+  });
+
+  mainMenu.fileMenu.addGroup([
+    {
+      command: CommandIDs.IConnect,
+    },
+  ], 40 /* rank */);
+
   // matches only non-directory items in the Google Drive browser.
   const selector =
     '#irod-fb .jp-DirListing-item';
-
 
   app.contextMenu.addItem({
     command: CommandIDs.copyIPath,
@@ -115,7 +183,7 @@ function activateFileBrowser(app: JupyterFrontEnd,
   });
 
   console.log("Irods Activated  1");
-  
+
   let msfix = window.localStorage;
   msfix.setItem("irpassword", "deprecated");
 
@@ -131,6 +199,8 @@ function activateFileBrowser(app: JupyterFrontEnd,
 
   const irodsBrowser = new IrodBrowser(browser, drive);
 
+  myBrowser = irodsBrowser;
+
 
   irodsBrowser.title.iconClass = 'irods-logo';
 
@@ -138,7 +208,7 @@ function activateFileBrowser(app: JupyterFrontEnd,
 
   // Add the file browser widget to the application restorer.
   restorer.add(irodsBrowser, "irod-fb");
-  app.shell.add(irodsBrowser, 'left', {rank: 102});
+  app.shell.add(irodsBrowser, 'left', { rank: 102 });
   //app.shell.addToLeftArea(irodsBrowser, { rank: 102 });
 
 
@@ -146,54 +216,11 @@ function activateFileBrowser(app: JupyterFrontEnd,
   Promise.all([app.restored])
     .then(([settings]) => {
       browser.model.restored.then(() => {
-        irodsBrowser.cdHome();
+        //irodsBrowser.cdHome();
       });
     }).catch((reason: Error) => {
       console.error(reason.message);
     });
-
-
-
-  // Add the right click menu modifier
-
-  // var observer = new MutationObserver(function (mutations) {
-
-  //   if (!irodsBrowser.createMenu){
-
-  //     return;
-  //   }
-
-  //   for (let bo of mutations) {
-
-  //     if (bo.addedNodes.length == 0) {
-  //       continue;
-  //     }
-
-  //     var foundElement: HTMLElement;
-
-  //     for (let i = 0; i < bo.addedNodes.length; i++) {
-  //       let no = <HTMLElement>bo.addedNodes.item(i);
-
-  //       if (no.className != "p-Widget p-Menu") {
-  //         continue;
-  //       }
-  //       if (no.childElementCount != 1) {
-  //         continue;
-  //       }
-  //       foundElement = <HTMLElement>no.childNodes.item(0);
-  //     }
-
-  //     if (foundElement == undefined) {
-  //       continue;
-  //     }
-
-  //     let el: HTMLElement = new CopyPath().copyPath;
-  //     foundElement.appendChild(el);
-  //     irodsBrowser.createMenu = false;
-  //   }
-  // });
-
-  // observer.observe(document.body, { childList: true });
 
   return;
 

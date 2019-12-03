@@ -38,7 +38,7 @@ class Irods:
 
         self.session = iRODSSession(irods_env_file=env_file)
 
-        return {'username' : self.session.username }
+        return {'username' : self.session.username, 'zone': self.session.zone}
 
     def set_connection(self, json_body):
         self.session = iRODSSession(
@@ -222,6 +222,8 @@ class Irods:
         #   First we try and see if we can a folder. If this try fails it's likely
         #   We are trying to GET a file.
         try:
+            print ("123 dog")
+            print(current_path)
 
             if ("Irods:" in current_path):
                 splits = current_path.split("Irods:")
