@@ -67,9 +67,6 @@ class Irods:
             print("error, invalid query: PATH missing")
             return
 
-        print(json_body['mv'])
-        print(json_body['path'])
-
         if json_body['mv']:
             #   CASE REMOVE ORIGINAL FILE
 
@@ -151,9 +148,6 @@ class Irods:
 
             obj = self.session.data_objects.get(current_path)
 
-            print(json.dumps(data['content']))
-            print(data['content'])
-            print(data['content'].encode())
 
             with obj.open('w') as f:
                 f.seek(0, 0)
@@ -257,8 +251,6 @@ class Irods:
         #   First we try and see if we can a folder. If this try fails it's likely
         #   We are trying to GET a file.
         try:
-            print ("123 dog")
-            print(current_path)
 
             if ("Irods:" in current_path):
                 splits = current_path.split("Irods:")

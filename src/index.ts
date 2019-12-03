@@ -218,7 +218,7 @@ function activateFileBrowser(app: JupyterFrontEnd,
   Promise.all([app.restored])
     .then(([settings]) => {
       browser.model.restored.then(() => {
-        //irodsBrowser.cdHome();
+        irodsBrowser.cdHome();
       });
     }).catch((reason: Error) => {
       console.error(reason.message);
