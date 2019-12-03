@@ -150,15 +150,17 @@ function activateFileBrowser(app: JupyterFrontEnd,
 
           if (window.getComputedStyle(myArea).height != "0px"){
 
+            let label = document.getElementById("collapseLabel1")
+
+            if (label == null){
+              return
+            }
+  
+            label.click()
+
           }
 
-          let label = document.getElementById("collapseLabel1")
 
-          if (label == null){
-            return
-          }
-
-          label.click()
       });    
 
     },

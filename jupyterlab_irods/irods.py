@@ -188,23 +188,55 @@ class Irods:
                 "type": "file"
             }
 
+    def get_home(self, current_path):
+
+          return {
+                "name": "folder_name",
+                "path": "folder_path",
+                "content": [
+                    {
+                        "name": "shared",
+                        "path": current_path + "/" + "shared",
+                        "content": [
+                        ],
+                        "format":"json",
+                        "mimetype":None,
+                        "writable":False,
+                        "type":"directory"
+                    },
+                    {
+                        "name": self.session.username,
+                        "path": current_path + "/" + self.session.username,
+                        "content": [
+                        ],
+                        "format":"json",
+                        "mimetype":None,
+                        "writable":False,
+                        "type":"directory"
+                    }
+
+                ],
+                "format": "json",
+                "mimetype": None,
+                "writable": False,
+                "type": "directory"
+            }
+
+
     def get(self, current_path):
         """
         Used to get contents of current directory
         """
+      
 
         if (self.session == None):
             return {
                 "name": "folder_name",
                 "path": "folder_path",
-                "last_modified": "1980-03-05T17:02:11.246961Z",
-                "created": "1980-03-05T17:02:11.246961Z",
                 "content": [
                     {
                         "name": "NOT CONNECTED",
                         "path": "NOT CONNECTED",
-                        "last_modified": "1980-03-05T17:02:11.246961Z",
-                        "created": "1980-03-05T17:02:11.246961Z",
                         "content": [
                         ],
                         "format":"json",
@@ -218,6 +250,9 @@ class Irods:
                 "writable": False,
                 "type": "directory"
             }
+
+        if ("/" + self.session.zone + "/home" == current_path):
+            return self.get_home(current_path)
 
         #   First we try and see if we can a folder. If this try fails it's likely
         #   We are trying to GET a file.
@@ -236,8 +271,6 @@ class Irods:
             result = {
                 "name": "folder_name",
                 "path": "folder_path",
-                "last_modified": "1980-03-05T17:02:11.246961Z",
-                "created": "1980-03-05T17:02:11.246961Z",
                 "content": [],
                 "format": "json",
                 "mimetype": None,
@@ -249,8 +282,6 @@ class Irods:
                 result['content'].append({
                     "name": folder.name,
                     "path":  current_path + "/" + folder.name,
-                    "last_modified": "1980-03-05T17:02:11.246961Z",
-                    "created": "1980-03-05T17:02:11.246961Z",
                     "content": None,
                     "format": "json",
                     "mimetype": None,
@@ -286,8 +317,6 @@ class Irods:
                     return {
                         "name": "error",
                         "path": "error",
-                        "last_modified": "1980-03-05T17:02:11.246961Z",
-                        "created": "1980-03-05T17:02:11.246961Z",
                         "content": "This file is too large to view in Jupyter Lab\nMax file size 100mb",
                         "format": "text",
                         "mimetype": "too_large",
@@ -338,14 +367,10 @@ class Irods:
                 return {
                     "name": "folder_name",
                     "path": "folder_path",
-                    "last_modified": "1980-03-05T17:02:11.246961Z",
-                    "created": "1980-03-05T17:02:11.246961Z",
                     "content": [
                         {
                             "name": "INVALID IRODS CONFIG",
                             "path": "INVALID IRODS CONFIG",
-                            "last_modified": "1980-03-05T17:02:11.246961Z",
-                            "created": "1980-03-05T17:02:11.246961Z",
                             "content": [
 
                             ],
