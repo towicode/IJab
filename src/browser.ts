@@ -1,7 +1,7 @@
 
 import {
     PanelLayout, Widget
-} from '@phosphor/widgets';
+} from '@lumino/widgets';
 
 import {
     FileBrowser
