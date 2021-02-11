@@ -30,7 +30,8 @@ TODO:
 
 ## Prerequisites
 
-* JupyterLab
+* JupyterLab==2.2.0
+(if you want to use JupyterLab 3, please use version 3.0.4 of this package when installing below.)
 
 ## Installation
 
