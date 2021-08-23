@@ -14,7 +14,7 @@ json5==0.8.5
 jsonschema==3.2.0
 jupyter-client==5.3.4
 jupyter-core==4.6.1
-jupyterlab==1.0.0
+jupyterlab==1.2.21
 -e git+git@github.com:towicode/IJab.git
 jupyterlab-server==1.0.0
 MarkupSafe==1.1.1
