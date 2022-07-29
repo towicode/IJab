@@ -18,7 +18,7 @@ jupyterlab==1.0.0
 -e git+git@github.com:towicode/IJab.git
 jupyterlab-server==1.0.0
 MarkupSafe==1.1.1
-mistune==0.8.4
+mistune==2.0.3
 nbconvert==5.6.1
 nbformat==4.4.0
 notebook==6.0.2
